@@ -1,3 +1,3 @@
 package config
 
-const ServiceName = "_http"
+const ServiceName = "_http._tcp"
