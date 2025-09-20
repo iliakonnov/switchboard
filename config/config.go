@@ -1,3 +1,3 @@
 package config
 
-const ServiceName = "_switchboard"
+const ServiceName = "_http"

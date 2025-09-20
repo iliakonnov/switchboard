@@ -41,8 +41,21 @@ func Connect(entry *mdns.ServiceEntry) error {
 }
 
 func register(entry *mdns.ServiceEntry) error {
-
-	u, err := url.Parse(fmt.Sprintf("http://%s:%d", entry.AddrV4, entry.Port))
+	var addr string
+	if v4 := entry.AddrV4; v4 != nil {
+		addr = v4.String()
+	} else if v6 := entry.AddrV6; v6 != nil {
+		addr = "[" + v6.String() + "]"
+	} else if host := entry.Host; host != "" {
+		addr = host
+	} else {
+		return fmt.Errorf("no address found for entry %+v", entry)
+	}
+	port := 80
+	if entry.Port != 0 {
+		port = entry.Port
+	}
+	u, err := url.Parse(fmt.Sprintf("http://%s:%d", addr, port))
 	if err != nil {
 		return err
 	}
